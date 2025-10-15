@@ -16,7 +16,9 @@ elseif uri:match("^/mt") then
 elseif uri:match("/mock") then
     ngx.var.target = mock_url
 else
-    ngx.var.target = administration_url -- fallback
+    ngx.status = 404
+    ngx.say("Route not found")
+    return ngx.exit(404)
 end
 
 ngx.log(ngx.ERR, "Roteando para target: ", ngx.var.target)
