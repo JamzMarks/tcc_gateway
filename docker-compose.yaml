@@ -1,13 +1,19 @@
 services:
   gateway:
+    build: .
     image: openresty/openresty:1.25.3.1-0-alpine
     container_name: nginx-lua-gateway
     ports:
       - "8081:8081"
+      - "443:443"
     volumes:
       - ./nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
       - ./lua:/etc/openresty/lua:ro
-    command: /bin/sh -c "mkdir -p /var/log/nginx && openresty -g 'daemon off;'"
+      - ./certs:/etc/openresty/certs
+      - ./entrypoint.sh:/entrypoint.sh:ro
+    command: ["/entrypoint.sh"]
+    environment:
+      - TZ=America/Sao_Paulo
     restart: always
 
   api:
