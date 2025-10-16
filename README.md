@@ -9,3 +9,6 @@ resty -e "local jwt = require 'resty.jwt'; print('JWT OK')"
 sudo apt install mkcert libnss3-tools
 
 mkcert -install
+
+mkcert localhost 127.0.0.1
+
