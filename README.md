@@ -12,3 +12,6 @@ mkcert -install
 
 mkcert localhost 127.0.0.1
 
+proxy_set_header Host $host;
+proxy_pass_request_headers on;
+proxy_pass_header Set-Cookie;
