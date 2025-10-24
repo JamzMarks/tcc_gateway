@@ -1,20 +1,38 @@
+version: "3.8"
+
 services:
   gateway:
-    image: openresty/openresty:1.25.3.1-0-alpine
+    build:
+      context: .          
+      dockerfile: Dockerfile
     container_name: nginx-lua-gateway
     ports:
-      - "8081:8081"
+      - "8081:80"    # HTTP
+      - "8443:443"   # HTTPS (host:container)
     volumes:
       - ./nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
       - ./lua:/etc/openresty/lua:ro
+      - ./keys:/etc/openresty/keys:ro
+      - ./certs:/etc/openresty/certs:ro
+    environment:
+      - ADMIN_API_URL=${ADMIN_API_URL}
+      - DEVICES_API_URL=${DEVICES_API_URL}
+      - METRICS_API_URL=${METRICS_API_URL}
     command: /bin/sh -c "mkdir -p /var/log/nginx && openresty -g 'daemon off;'"
     restart: always
 
-  api:
-    image: kennethreitz/httpbin
-    container_name: mock-api
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
     ports:
-      - "5000:80"
+      - "5672:5672"   # Porta AMQP
+      - "15672:15672" # Porta da UI de gerenciamento
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: pass
+    networks:
+      - gateway-net
+    restart: unless-stopped
 
 networks:
   gateway-net:
