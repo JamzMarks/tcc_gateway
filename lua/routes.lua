@@ -4,6 +4,7 @@ local uri = ngx.var.request_uri
 local ADMIN_API_URL = os.getenv("ADMIN_API_URL") or "http://host.docker.internal:4000/api/v1/"
 local DEVICES_API_URL = os.getenv("DEVICES_API_URL") or "http://host.docker.internal:3005/api/v1/"
 local METRICS_API_URL = os.getenv("METRICS_API_URL") or "http://host.docker.internal:3006/api/v1/"
+local YOLO_API_URL = os.getenv("YOLO_API_URL_API_URL") or "http://host.docker.internal:7676"
 
 
 local ADMIN_API_DOCS = os.getenv("ADMIN_API_DOCS") or "http://host.docker.internal:4000/docs"
@@ -40,6 +41,9 @@ elseif uri:match("^/mt") then
         target_base = METRICS_API_URL
         path = uri:gsub("^/mt", "")
     end
+elseif uri:match("^/yolo") then
+    target_base = YOLO_API_URL
+    path = uri:gsub("^/yolo", "")
 
 else
     ngx.status = 404

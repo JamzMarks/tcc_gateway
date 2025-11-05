@@ -19,6 +19,7 @@ services:
       - ADMIN_API_DOCS=${ADMIN_API_DOCS}
       - DEVICES_API_DOCS=${DEVICES_API_DOCS}
       - METRICS_API_DOCS=${METRICS_API_DOCS}
+      - YOLO_API_URL=${YOLO_API_URL}
     command: /bin/sh -c "mkdir -p /var/log/nginx && openresty -g 'daemon off;'"
     restart: always
 
