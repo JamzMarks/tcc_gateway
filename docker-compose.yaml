@@ -20,21 +20,9 @@ services:
       - DEVICES_API_DOCS=${DEVICES_API_DOCS}
       - METRICS_API_DOCS=${METRICS_API_DOCS}
       - YOLO_API_URL=${YOLO_API_URL}
+      - MOCK_ADAPTER_URL=${MOCK_ADAPTER_URL}
     command: /bin/sh -c "mkdir -p /var/log/nginx && openresty -g 'daemon off;'"
     restart: always
-
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbitmq
-    ports:
-      - "5672:5672"   # Porta AMQP
-      - "15672:15672" # Porta da UI de gerenciamento
-    environment:
-      RABBITMQ_DEFAULT_USER: user
-      RABBITMQ_DEFAULT_PASS: pass
-    networks:
-      - gateway-net
-    restart: unless-stopped
 
 networks:
   gateway-net:
